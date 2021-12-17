@@ -1,0 +1,51 @@
+Classification:
+
+
+	- Naive Bayes: 
+		○ mô hình phân loại xác suất đơn giản
+		○ thuộc loại mô hình sinh (Generative)
+	- Random forest:
+		○ Khi huấn luyện:
+			§ Xây dựng nhiều cây quyết định bằng thuật toán Decision tree (mỗi cây là khác nhau (random))
+		○ Khi dự đoán:
+			§ Với mỗi dữ liệu mới, mỗi cây quyết định sẽ đi từ trên xuống theo các node điều kiện để được các dự đoán, sau đó kết quả cuối cùng đc tổng hợp từ kết quả của cây quyết định. VD 6 cây quyết định, 5 cây cho 1 và 1 cây cho 0 thì kết quả dự đoán cuối cùng là 1
+		○ Xây dựng:
+			§ Cho trước: n sample dữ liệu, mỗi sample có d thuộc tính (feature)
+			§ Để xây dựng mỗi cây quyết định:
+				□ Lấy ngẫu nhiên n sample từ bộ dữ liệu với kĩ thuật Bootstrapping (random sampling with replacement). Khi sample 1 dữ liệu thì ko bỏ dữ liệu đó ra mà vẫn giữ lại trong tập dữ liệu ban đầu, rồi tiếp tục sample cho tới khi sample đủ n dữ liệu. Khi dùng kĩ thuật này thì tập n dữ liệu mới của mình có thể có những dữ liệu bị trùng.
+				□ 
+				
+				□ Sau khi sample được n dữ liệu thì chọn ngẫu nhiên ở k thuộc tính (k < n) được bộ dữ liệu mới gồm n dữ liệu và mỗi dữ liệu có k thuộc tính.
+				□ Dùng thuật toán Desicion Tree để xây dựng cây quyết định vs bộ dữ liệu trên
+			§ Do quá trình xây dựng mỗi cây quyết định đều có yếu tố ngẫu nhiên nên kết quả là các cây quyết định trong thuật toán Random Forest có thể khác nhau.
+		○ Why?
+			§ Trong thuật toán Decision tree, khi xây dựng cây quyết định nếu để độ sâu tùy ý thì cây sẽ phân loại đúng hết các dữ liệu trong tập train dẫn đến overfitting và dự đoán tệ trong tập validation.
+			§ Random Forest do mỗi cây quyết định đều dùng yếu tố ngẫu nhiên và ko dùng tất cả các dữ liệu training, cũng như ko dùng tất cả các thuộc tính của dữ liệu để xây dưựng cây nên mỗi cây có thể sẽ dự đoán nên mỗi cây có thể dự đoán ko tốt, khi đó mỗi mô hình cây quyết định ko bị overfitting mà có thể bị underfitting. Tuy nhiên, kết quả cuối cùng của thuật toán lại tổng hợp từ nhiều cây, nên thông tin từ các cây sẽ bổ sung cho nhau, dẫn đến mô hình có low bias và low variance, mô hình có kết quả dự đón tốt.
+
+
+
+
+
+	- Conditional random fields (CRF)
+		○ Thừa kế các điểm mạnh của MEMMs (Maximum entropy Markov models - mô hình Markov cực đại hóa entropy) nhưng lại giải quyết đc vấn đề "label bias"
+			§ MEMMs là một mô hình xác suất điều kiện, định nghĩa xác suất trên từng label, với đầu vào là thuộc tính quan sát, đầu ra là xác suất chuyển tới label tiếp theo.
+			§ Giống như các mô hình phân phối xác suất, MEMMs cũng gặp phải vấn đề gọi là "label bias": khi bộ data có nhãn ko thực sự đại diện cho toàn bộ data
+		○ Điểm khác biệt giữa MEMMs và CRF đó là MEMMs định nghĩa phân phối xác suất trên từng label vs điều kiện biết trc label đó và quan sát hiện tại, trong khi CRF định nghĩa phân phối xác suất trên toàn bộ chuỗi label vs điều kiện biết chuỗi quan sát cho trước
+		○ Trong ML có thể đc chia thành 2 loại mô hình:
+			§ Mô hình phân biệt (Discriminative): có tác dụng phân loại, dựa trên những biến đầu vào x để dự báo nhãn hoặc giá trị y. Về bản chất đây chính là một mô hình classification hoặc prediction. Mô hình sẽ dự báo đầu ra dựa trên các dấu hiệu là đầu vào đã biết và giá trị dự báo là một xác suất có điều kiện: P(y|x), trong đó y là mục tiêu cần dự báo và x là điều kiện
+			§ Mô hình sinh (Generative): cố gắng dự báo P(x|y). Mô hình sẽ tập trung hơn vào việc tìm kiếm đặc trưng của dữ liệu như thế nào nếu đã biết trước đầu ra dữ liệu
+			§ 
+			
+		○ CRF thuộc loại mô hình phân biệt
+		○ 
+		○ Dữ liệu đầu vào cho CRF là dữ liệu tuần tự, cân nhắc đến ngữ cảnh trước đó khi dự đoán trên 1 điểm dữ liệu.
+		○ Sử dụng Feature Functions, với nhiều giá trị đầu vào:
+			§ Bộ vector đầu vào: X
+			§ Vị trí i của điểm dữ liệu đang dự đoán
+			§ Nhãn của điểm dữ liệu i - 1 trong X
+			§ Nhãn của điểm dữ liệu i trong X
+		
+		○ Feature function: 
+			§ 
+			
+		○ Feature function đc dùng để biểu diễn đặc trưng tuần tự của điểm dữ liệu.
